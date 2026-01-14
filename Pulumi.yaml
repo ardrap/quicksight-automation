@@ -1,0 +1,11 @@
+name: Pulumi_demoo
+description: Pulumi Demooo
+runtime:
+  name: python
+  options:
+    toolchain: pip
+    virtualenv: venv
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-python
