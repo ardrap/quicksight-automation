@@ -3,7 +3,7 @@ import pulumi
 
 # Get the absolute path of the directory where __main__.py is located
 base_dir = os.path.dirname(os.path.abspath(__file__))
-sql_file_path = os.path.join(base_dir, 'pulumidemo.sql')
+sql_file_path = os.path.join(base_dir, 'Pulumidemo.sql')
 
 # Debugging: Print exactly where the runner is looking
 print(f"DEBUG: Looking for SQL file at: {sql_file_path}")
