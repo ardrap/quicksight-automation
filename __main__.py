@@ -2,37 +2,37 @@ import pulumi
 import pulumi_aws as aws
 import os
 
-# 1. FIX THE FILE PATH
-# This ensures GitHub can find the SQL file no matter where it is running
+# 1. THE SQL PART: Locate and read the SQL file
 sql_file_path = os.path.join(os.path.dirname(__file__), 'pulumidemo.sql')
 
-try:
+if os.path.exists(sql_file_path):
     with open(sql_file_path, 'r') as f:
-        sql_query = f.read()
-except FileNotFoundError:
-    # This helps you debug if the file is truly missing on GitHub
-    print(f"❌ ERROR: Pulumi cannot find '{sql_file_path}'. Check the file name!")
-    raise
+        sql_query_content = f.read()
+else:
+    # This keeps the automation from crashing if the file is missing
+    raise FileNotFoundError(f"❌ ERROR: Pulumi cannot find '{sql_file_path}'")
 
-# 2. FIX THE DATASET CODE
+# 2. THE AWS PART: Fixed for Pulumi & QuickSight
+# Use the correct properties to avoid "Missing required property" errors
 dataset = aws.quicksight.DataSet("my-dataset",
-    aws_account_id="YOUR_AWS_ACCOUNT_ID",
-    data_set_id="quicksight-automation-dataset",
-    name="Automation Dataset",
-    import_mode="SPICE",  # <--- THIS WAS THE MISSING PROPERTY
+    aws_account_id="261375936682",
+    data_set_id="9beb65c3-c192-43b8-9b63-d543eef88159",
+    name="QuickSight Automation Dataset",
+    import_mode="SPICE",  # <--- FIXES YOUR ERROR
     physical_table_map={
-        "sql-table": {
+        "sql-query-01": { # A unique ID for this table within the dataset
             "custom_sql": {
-                "data_source_arn": "YOUR_DATA_SOURCE_ARN",
-                "name": "CustomSQL",
-                "sql_query": sql_query,
+                "data_source_arn": "arn:aws:quicksight:ap-south-1:261375936682:datasource/YOUR_DATA_SOURCE_ID",
+                "name": "CustomSQLTable",
+                "sql_query": sql_query_content, # Uses the SQL we read above
                 "columns": [
-                    {"name": "column1", "type": "STRING"},
-                    # Add your other columns here
+                    {"name": "Corporate ID", "type": "INTEGER"},
+                    {"name": "Brand Name", "type": "STRING"},
+                    {"name": "Brand Code", "type": "STRING"}
                 ],
             },
         },
     },
-    # REMEMBER: Add your import line here once you have permissions
-    # opts=pulumi.ResourceOptions(import_="YOUR_ACCOUNT_ID/DATASET_ID")
+    # Note: Keep the import option commented until permissions are granted
+    # opts=pulumi.ResourceOptions(import_="261375936682/9beb65c3-c192-43b8-9b63-d543eef88159")
 )
