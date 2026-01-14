@@ -1,29 +1,38 @@
-"""An AWS Python Pulumi program"""
-
 import pulumi
 import pulumi_aws as aws
 import os
 
-# 1. THE TEST: Locate and read the SQL file
+# 1. FIX THE FILE PATH
+# This ensures GitHub can find the SQL file no matter where it is running
 sql_file_path = os.path.join(os.path.dirname(__file__), 'pulumidemo.sql')
 
-# This part checks if the file actually exists before trying to read it
-if os.path.exists(sql_file_path):
+try:
     with open(sql_file_path, 'r') as f:
-        sql_query_content = f.read()
-    print("✅ SUCCESS: Pulumi can find and read your SQL file!")
-    print("-" * 30)
-    print(f"SQL CONTENT:\n{sql_query_content}")
-    print("-" * 30)
-else:
-    print("❌ ERROR: Pulumi cannot find 'pulumidemo.sql'. Check the file name!")
+        sql_query = f.read()
+except FileNotFoundError:
+    # This helps you debug if the file is truly missing on GitHub
+    print(f"❌ ERROR: Pulumi cannot find '{sql_file_path}'. Check the file name!")
+    raise
 
-# 2. THE AWS PART (This will stay here until you get permissions)
-# Even though we can't 'up' yet, we keep this here so the code is ready.
+# 2. FIX THE DATASET CODE
 dataset = aws.quicksight.DataSet("my-dataset",
-    aws_account_id="261375936682",
-    data_set_id="9beb65c3-c192-43b8-9b63-d543eef88159",
-    # ... other fields ...
+    aws_account_id="YOUR_AWS_ACCOUNT_ID",
+    data_set_id="quicksight-automation-dataset",
+    name="Automation Dataset",
+    import_mode="SPICE",  # <--- THIS WAS THE MISSING PROPERTY
+    physical_table_map={
+        "sql-table": {
+            "custom_sql": {
+                "data_source_arn": "YOUR_DATA_SOURCE_ARN",
+                "name": "CustomSQL",
+                "sql_query": sql_query,
+                "columns": [
+                    {"name": "column1", "type": "STRING"},
+                    # Add your other columns here
+                ],
+            },
+        },
+    },
+    # REMEMBER: Add your import line here once you have permissions
+    # opts=pulumi.ResourceOptions(import_="YOUR_ACCOUNT_ID/DATASET_ID")
 )
-
-
