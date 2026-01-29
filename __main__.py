@@ -30,7 +30,7 @@ dataset = aws.quicksight.DataSet("my-dataset",
         }
     }],
     # This tells Pulumi: "I already created this manually, please take control of it."
-    opts=pulumi.ResourceOptions(import_="261375936682,9beb65c3-c192-43b8-9b63-d543eef88159")
+    # opts=pulumi.ResourceOptions(import_="261375936682,9beb65c3-c192-43b8-9b63-d543eef88159")
 )
 
 pulumi.export("dataset_arn", dataset.arn)
