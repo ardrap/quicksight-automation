@@ -5,5 +5,6 @@ SELECT
     country AS "Country",
     is_active AS "Active",
     order_number AS "number",
-    is_luxury AS "Luxuary"
+    is_luxury AS "Luxuary",
+    is_generic AS "Generic"
 FROM ygag_store_brand
