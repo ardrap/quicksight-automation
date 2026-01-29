@@ -4,5 +4,5 @@ SELECT
     brand_code AS "Brand Code",
     country AS "Country",
     is_active AS "Active",
-    order_number AS "number'
+    order_number AS "number"
 FROM ygag_store_brand
