@@ -5,7 +5,7 @@ import pulumi_aws as aws
 import os
 
 # 1. READ YOUR SQL FILE
-sql_file_path = os.path.join(os.path.dirname(__file__), 'pulumidemo.sql')
+sql_file_path = os.path.join(os.path.dirname(__file__), 'Pulumidemo.sql')
 with open(sql_file_path, 'r') as f:
     sql_query_content = f.read()
 
