@@ -11,7 +11,7 @@ with open(sql_file_path, 'r') as f:
 
 # 2. DEFINE THE DATASET (This is the automation part)
 # This connects your local SQL file to the existing AWS Dataset
-dataset = aws.quicksight.DataSet("my-dataset",
+dataset = aws.quicksight.DataSet("qs-production-dataset",
     aws_account_id="261375936682",
     data_set_id="9beb65c3-c192-43b8-9b63-d543eef88159",
     name="Pulumi_Test_Dataset", # The display name in QuickSight
@@ -28,6 +28,13 @@ dataset = aws.quicksight.DataSet("my-dataset",
                 { "name": "Brand Code", "type": "STRING" }
             ],
         }
+    }],
+    logical_table_maps=[{
+        "logical_table_map_id": "sql-table-01", 
+        "alias": "Corporate_Brand_Query",
+        "source": {
+            "physical_table_id": "sql-table-01",
+        },
     }],
     # This tells Pulumi: "I already created this manually, please take control of it."
     # opts=pulumi.ResourceOptions(import_="261375936682,9beb65c3-c192-43b8-9b63-d543eef88159")
