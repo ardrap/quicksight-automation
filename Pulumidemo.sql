@@ -4,7 +4,6 @@ SELECT
     brand_code AS "Brand Code",
     country AS "Country",
     is_active AS "Active",
-    order_number AS "number",
     is_luxury AS "Luxuary"
     
 FROM ygag_store_brand
