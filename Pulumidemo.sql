@@ -5,5 +5,6 @@ SELECT
     country AS "Country",
     is_active AS "Active",
     is_luxury AS "Is Luxuary"
+    is_luxury AS "Is Luxuary1"
     
 FROM ygag_store_brand
